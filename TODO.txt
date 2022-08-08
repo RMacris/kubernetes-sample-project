@@ -1,0 +1,13 @@
+1- create a node app
+2- create an image from that app
+3- create a kind cluster from configuration yaml
+4- create a pod that uses that image
+4.1- assign namespace to the pod
+5- create a configuration file to configure the pod that will run the node application 
+6- create a nginx-ingress deploy and assign it to the context of the pod
+6.1 find out how to connect nginx-ingress to the application running the pod (probably using a service) 
+7- assign the nginx-ingress as gateway to the pod
+8- create and test a load balancer for 3 pods 
+8.1- create and test auto scaler 
+9- using a secret in the pod 
+----------------

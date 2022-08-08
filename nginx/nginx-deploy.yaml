@@ -1,0 +1,34 @@
+
+#This file creates a deployment of nginx webserver using nginx-configmap.yaml file
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deploy-rafa-test #name of the deployment
+  namespace: rafael-test-namespace #define the namesapce of the deployment
+spec:
+  selector:
+    matchLabels:  #tells what pods the deployment will apply to.
+      app: nginx-deploy-rafa-test 
+  template: #?
+    metadata: # Describes de deployment itself
+      labels: # label of the deployment 
+        app: nginx-deploy-rafa-test #
+    spec: # especifications of the container
+      containers:
+      - name: nginx-deploy-rafa-test #name of the container
+        image: nginx:latest #image that will this pod run
+        resources:
+          limits:
+            memory: "128Mi" # memory being used by this pod
+            cpu: "500m" # amount of CPU used by this pod 500m = 0.5 Cores
+        ports:
+        - containerPort: 8123
+      env:
+        name: NGINX_CONFIG # Name of the environment variable
+        valueFrom: 
+          configMapKeyRef:
+            name: nginx-webserver # name of the config
+            key: testConfig # name of the key inside the config
+            # optional: true # mark the variable as optional
+            # when not market as optional , if secret of configmap doesn't exist before pod exists
+            # the pod won't start

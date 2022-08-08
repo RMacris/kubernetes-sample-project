@@ -1,0 +1,10 @@
+#Draw back, changes in config map aren't reflected in the container 
+apiVersion: v1
+kind: ConfigMap 
+metadata:
+  #creationTimestamp: 2016-02-18T18:52:05Z # defines the moment in which the config map was created
+  name: nginx-webserver #name of the config map
+  namespace: rafael-test-namespace #defines default namesapce
+data:
+  testConfig: learning #key value pair
+  testSecondKey: learning-2 #key value pair

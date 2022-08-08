@@ -1,0 +1,49 @@
+Name:         nginx-app-test
+Namespace:    rafael-test-namespace
+Priority:     0
+Node:         <none>
+Labels:       name=nginx-app-test
+Annotations:  <none>
+Status:       Pending
+IP:           
+IPs:          <none>
+Containers:
+  nginx-app-test:
+    Image:      nginx
+    Port:       8900/TCP
+    Host Port:  0/TCP
+    Limits:
+      cpu:     500m
+      memory:  128Mi
+    Requests:
+      cpu:     500m
+      memory:  128Mi
+    Environment:
+      POD_CONFIG:           <set to the key 'config-test' of config map 'basic-config'>           Optional: false
+      POD_USERNAME_SECRET:  <set to the key 'username' in secret 'rafael-test-namespace-secret'>  Optional: false
+      POD_PASSWORD_SECRET:  <set to the key 'password' in secret 'rafael-test-namespace-secret'>  Optional: false
+    Mounts:
+      /usr/share/nginx/html from task-pv-storage (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-m49g7 (ro)
+Conditions:
+  Type           Status
+  PodScheduled   False 
+Volumes:
+  task-pv-storage:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  task-pv-claim
+    ReadOnly:   false
+  kube-api-access-m49g7:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   Guaranteed
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason            Age                From               Message
+  ----     ------            ----               ----               -------
+  Warning  FailedScheduling  4s (x19 over 17m)  default-scheduler  0/1 nodes are available: 1 persistentvolumeclaim "task-pv-claim" not found.

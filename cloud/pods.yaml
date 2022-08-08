@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Pod 
+metadata:
+  name: nginx-app-test
+  namespace: rafael-test-namespace
+  labels:
+    name: nginx-app-test
+spec:
+  volumes:
+    - name: task-pv-storage #the nome of the volume to be used
+      persistentVolumeClaim: 
+        claimName: task-pv-claim # the name of the claim to be used
+  containers:
+  - name: nginx-app-test
+    image: nginx
+    volumeMounts:  #volumeMounts define the volume associated with this pod 
+     - name: task-pv-storage # defines the name of the volume
+       mountPath: "/usr/share/nginx/html" # the path in the container? to be mounted
+    env:
+      - name: POD_CONFIG 
+        valueFrom:
+          configMapKeyRef:
+            name: basic-config
+            key:  config-test
+      - name: POD_USERNAME_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: rafael-test-namespace-secret
+            key: username
+      - name: POD_PASSWORD_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: rafael-test-namespace-secret
+            key: password
+    resources:
+        limits: # case the values below exceed, the pod will be killed
+          memory: "128Mi" # the pod will use 128Mb of memory
+          cpu: "500m" # equivalent to 0.5 CPU core
+    ports:
+    - containerPort: 8900 # the port o the container in the pod
+      #name: http-server
+
+
+      
+    
+ # volume yet to be defined
+ # volumes: //defines a volume 
+ # - name: config-volume
+ #   configMap: 
+ #     # Provide the name of the ConfigMap containing the files you want
+ #     # to add to the container
+ #     name: special-config #define which configmap is associated with the volume
+  
+

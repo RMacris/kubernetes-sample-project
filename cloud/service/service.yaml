@@ -1,0 +1,22 @@
+# A Kubernetes service is a logical abstraction for a deployed group of pods in a cluster 
+# (which all perform the same function). Since pods are ephemeral, a service enables a group of pods,
+# which provide specific functions (web services, image processing, etc.) 
+# to be assigned a name and unique IP address (clusterIP).
+
+# While each Pod has a unique IP address, these IPs are not exposed externally to the cluster without a Service.
+# Services allow your applications to receive traffic
+# https://kubernetes.io/pt-br/docs/tutorials/kubernetes-basics/expose/expose-intro/
+apiVersion: apps/v1
+kind: Service
+metadata:
+  name: service-test
+  namespace: rafael-test-namespace
+specs:
+  selector: 
+    app: nginx #The metadata label of the deployment 
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8900 #should match the container port of the deployment
+      nodePort: 50000 # This is the port for the node in which will be accessible from outside the cluster
+      # use this port to acess the pods contained in that node 

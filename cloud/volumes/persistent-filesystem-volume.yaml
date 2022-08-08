@@ -1,0 +1,15 @@
+#This file is responsable to create a persistent filesystem volume in the host machine in the especified path
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: rafael-test-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 521Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/usr/kubernetes-volumes"

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-app-test
+  labels:
+    app: nginx # used by a service selector to 
+    # create the connection between the service and deployment
+  namespace: rafael-test-namespace
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-app-test
+  template:
+    metadata:
+      labels:
+        app: nginx-app-test
+      namespace: rafael-test-namespace
+    spec:
+      containers:
+      - name: nginx-app-test
+        image: nginx
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        env:
+        - name: POD_CONFIG 
+          valueFrom:
+            configMapKeyRef:
+              name: basic-config
+              key:  config-test
+        - name: POD_USERNAME_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: rafael-test-namespace-secret
+              key: username
+        - name: POD_PASSWORD_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: rafael-test-namespace-secret
+              key: password
+        ports:
+        - containerPort: 8900

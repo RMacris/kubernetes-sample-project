@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: basic-config
+  namespace: rafael-test-namespace
+data:
+  config-test: configWorking

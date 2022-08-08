@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: exposer-service
+  namespace: rafael-test-namespace
+spec:
+  selector:
+    app: exposer-service
+  ports:
+  - port: 8192
+    targetPort: 8900
